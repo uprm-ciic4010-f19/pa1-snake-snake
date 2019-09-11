@@ -7,7 +7,7 @@ import UI.UIImageButton;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.net.http.HttpResponse.BodyHandler;
+//import java.net.http.HttpResponse.BodyHandler;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -58,24 +58,24 @@ public class Player {
 
 			//Unable backtracking
 		}
-		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP ) ){
+		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W ) ){
 
 			if(direction !="Down" ) {
 				direction = "Up" ;
 			}
-		}if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_DOWN)){
+		}if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_S)){
 
 
 			if(direction != "Up") {
 				direction = "Down";
 			}
-		}if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_LEFT)){
+		}if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_A)){
 
 
 			if(direction != "Right") {
 				direction = "Left";
 			}
-		}if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_RIGHT)){
+		}if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_D)){
 
 			if(direction != "Left") {
 				direction = "Right";
@@ -86,6 +86,18 @@ public class Player {
 
 
 		}
+
+		//implementacion de tecla N, para aumentar cola.
+		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_N)) 
+			handler.getWorld().body.addFirst(new Tail(xCoord, yCoord,handler));
+
+		//implementacion de tecla + para aumentar velocidad
+		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_EQUALS))
+			speed --;  
+
+		//implementacion de tecla - para reducir velocidad
+		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_MINUS))	  
+			speed++;
 
 
 
