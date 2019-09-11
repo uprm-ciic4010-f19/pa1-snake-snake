@@ -5,6 +5,7 @@ import Main.Handler;
 import Resources.Images;
 import UI.UIImageButton;
 
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 //import java.net.http.HttpResponse.BodyHandler;
@@ -12,10 +13,13 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
+import Game.GameStates.GameState;
 import Game.GameStates.MenuState;
 import Game.GameStates.PauseState;
 import Game.GameStates.State;
+
 import Main.Handler;
 
 import java.awt.*;
@@ -146,6 +150,7 @@ public class Player {
 
 
 		if(handler.getWorld().appleLocation[xCoord][yCoord]){
+			
 
 			//sumation
 			speed--;
@@ -160,6 +165,17 @@ public class Player {
 			handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
 			handler.getWorld().body.removeLast();
 			handler.getWorld().body.addFirst(new Tail(x, y,handler));
+			//collition with itself
+			for(int i =0;i< handler.getWorld().body.size();i++) {
+				if(xCoord == handler.getWorld().body.get(i).x && yCoord == handler.getWorld().body.get(i).y) {
+					
+					JOptionPane.showMessageDialog(null, "Game Over");
+					System.exit(0);
+								
+				}
+				
+				
+			}
 
 		}
 
