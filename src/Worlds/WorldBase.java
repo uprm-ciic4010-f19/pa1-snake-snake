@@ -58,6 +58,7 @@ public abstract class WorldBase {
             g.setColor(Color.white);
             g.drawLine(0, i, handler.getWidth() , i);
             g.drawLine(i,0,i,handler.getHeight());
+            g.clearRect(0, 0, 800, 800); //grid lines not visible
 
         }
 
