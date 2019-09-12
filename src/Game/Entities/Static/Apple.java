@@ -18,5 +18,8 @@ public class Apple {
         this.yCoord=y;
     }
 
+    public static boolean isGood(){
+    	return false;
+    }
 
 }

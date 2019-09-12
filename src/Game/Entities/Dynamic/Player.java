@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import Game.Entities.Static.Apple;
 import Game.GameStates.GameState;
 import Game.GameStates.MenuState;
 import Game.GameStates.PauseState;
@@ -148,16 +149,17 @@ public class Player {
 		//When the Snakes eats
 		handler.getWorld().playerLocation[xCoord][yCoord]=true;
 
-
+		Tail tail= null;
 		if(handler.getWorld().appleLocation[xCoord][yCoord]){
-			
 
-			//sumation
-			speed--;
-			Eat();
-			score += Math.sqrt((2*score + 1));// Score 
-
-
+			if (Apple.isGood() == false){
+				Eat();
+				score -= Math.sqrt((2*score +1));
+				lenght--;
+			}else{
+				Eat();
+				score += Math.sqrt((2*score +1));
+			}
 		}
 		// si choco 
 
@@ -165,16 +167,17 @@ public class Player {
 			handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
 			handler.getWorld().body.removeLast();
 			handler.getWorld().body.addFirst(new Tail(x, y,handler));
+
 			//collition with itself
 			for(int i =0;i< handler.getWorld().body.size();i++) {
 				if(xCoord == handler.getWorld().body.get(i).x && yCoord == handler.getWorld().body.get(i).y) {
-					
+
 					JOptionPane.showMessageDialog(null, "Game Over");
 					System.exit(0);
-								
+
 				}
-				
-				
+
+
 			}
 
 		}
@@ -193,23 +196,31 @@ public class Player {
 							(j*handler.getWorld().GridPixelsize),
 							handler.getWorld().GridPixelsize,
 							handler.getWorld().GridPixelsize);
-
 				}
-
-
-				if(handler.getWorld().appleLocation[i][j]){
+				//Para poder cambiar la manzana mala a otro color
+				else if(Apple.isGood() == false){
+					if(handler.getWorld().appleLocation[i][j]){
+						g.setColor(Color.YELLOW);
+						g.fillRect((i*handler.getWorld().GridPixelsize),
+								(j*handler.getWorld().GridPixelsize),
+								handler.getWorld().GridPixelsize,
+								handler.getWorld().GridPixelsize);
+					}
+				}
+				else if(handler.getWorld().appleLocation[i][j]){
 					g.setColor(Color.red);
 					g.fillRect((i*handler.getWorld().GridPixelsize),
 							(j*handler.getWorld().GridPixelsize),
 							handler.getWorld().GridPixelsize,
 							handler.getWorld().GridPixelsize);
 
-
 				}
-
 
 			}
 
+
+
+			//
 
 
 
@@ -223,8 +234,7 @@ public class Player {
 		g.setColor(Color.white);
 		g.setFont(new Font(" Times new roman ", Font.PLAIN, 20 ));
 		g.drawString(" Lenght: " + lenght, 5, 40);
-		for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
-		}
+
 	}
 
 
@@ -338,8 +348,16 @@ public class Player {
 			}
 			break;
 		}
+		if(Apple.isGood() == true){
+			
 		handler.getWorld().body.addLast(tail);
 		handler.getWorld().playerLocation[tail.x][tail.y] = true;
+		}else{
+			handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
+			handler.getWorld().appleLocation[xCoord][yCoord]=false;
+			handler.getWorld().body.removeLast();	
+		}
+		
 	}
 
 	public void kill(){
