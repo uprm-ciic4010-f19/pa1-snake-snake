@@ -103,7 +103,12 @@ public class Player {
 		//implementacion de tecla - para reducir velocidad
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_MINUS))	  
 			speed++;
-
+		
+		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_M)){
+			handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
+		handler.getWorld().appleLocation[xCoord][yCoord]=false;
+		handler.getWorld().body.removeLast();	
+		}
 
 
 	}
@@ -151,15 +156,14 @@ public class Player {
 
 		Tail tail= null;
 		if(handler.getWorld().appleLocation[xCoord][yCoord]){
-
-			if (Apple.isGood() == false){
-				Eat();
+			
+			if(Apple.isGood() == false){
+				shittyEat();
 				score -= Math.sqrt((2*score +1));
-				lenght--;
-			}else{
+				
+			}else
 				Eat();
 				score += Math.sqrt((2*score +1));
-			}
 		}
 		// si choco 
 
@@ -217,13 +221,6 @@ public class Player {
 				}
 
 			}
-
-
-
-			//
-
-
-
 		}
 
 		//Score implementation
@@ -236,9 +233,6 @@ public class Player {
 		g.drawString(" Lenght: " + lenght, 5, 40);
 
 	}
-
-
-
 
 	public void Eat(){
 		//For Lenght implemantation
@@ -347,17 +341,17 @@ public class Player {
 
 			}
 			break;
-		}
-		if(Apple.isGood() == true){
-			
+		}		
 		handler.getWorld().body.addLast(tail);
-		handler.getWorld().playerLocation[tail.x][tail.y] = true;
-		}else{
-			handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
-			handler.getWorld().appleLocation[xCoord][yCoord]=false;
-			handler.getWorld().body.removeLast();	
-		}
+		handler.getWorld().playerLocation[tail.x][tail.y] = true;		
+	}
+	
+	public void shittyEat(){
 		
+		handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
+		handler.getWorld().appleLocation[xCoord][yCoord]=false;
+		handler.getWorld().body.removeLast();
+		handler.getWorld().appleOnBoard = false;
 	}
 
 	public void kill(){

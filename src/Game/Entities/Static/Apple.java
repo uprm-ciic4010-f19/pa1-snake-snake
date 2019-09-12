@@ -19,7 +19,7 @@ public class Apple {
     }
 
     public static boolean isGood(){
-    	return false;
+    	return true;
     }
 
 }
