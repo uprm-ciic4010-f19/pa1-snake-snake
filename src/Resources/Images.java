@@ -2,6 +2,8 @@ package Resources;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -13,6 +15,9 @@ public class Images {
 
     public static BufferedImage[] butstart;
     public static BufferedImage title;
+    public static Image gameOver;//a~adido
+    public static BufferedImage[] Restart;//a~adido
+    public static BufferedImage[] Exit;//a~adido
     public static BufferedImage Pause;
     public static BufferedImage[] Resume;
     public static BufferedImage[] BTitle;
@@ -25,6 +30,8 @@ public class Images {
         Resume = new BufferedImage[2];
         BTitle = new BufferedImage[2];
         Options = new BufferedImage[2];
+        Restart = new BufferedImage[2];//a~adido
+        Exit = new BufferedImage[2];
 
         try {
 
@@ -41,8 +48,11 @@ public class Images {
             butstart[2]= ImageIO.read(getClass().getResourceAsStream("/Buttons/ClickedBut.png"));//clickbut
 
             icon =  new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/Sheets/icon.png")));
-
-
+            //fotos a~adidas
+            gameOver = ImageIO.read(getClass().getResourceAsStream("/Sheets/gameOver.png"));
+            Restart[0] = ImageIO.read(getClass().getResourceAsStream("/Buttons/restart.png"));
+            Exit[0] = ImageIO.read(getClass().getResourceAsStream("/Buttons/Exit.png"));
+            
         }catch (IOException e) {
         e.printStackTrace();
     }
