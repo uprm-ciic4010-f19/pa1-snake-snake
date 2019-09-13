@@ -17,7 +17,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import com.sun.org.apache.xalan.internal.xsltc.dom.LoadDocument;
 
 import Game.Entities.Static.Apple;
 import Game.GameStates.GameOverState;
@@ -46,6 +45,7 @@ public class Player {
 	public int yCoord;
 
 	int speed = 5; //speed variable
+	int step = 0; //For counter
 	public int moveCounter;
 
 	public String direction;//is your first name one?
@@ -63,7 +63,9 @@ public class Player {
 
 	public void tick(){   
 		moveCounter++;
+		stepCounter();
 		if(moveCounter>=speed) { //speed
+			step++;
 			checkCollisionAndMove();
 			moveCounter= 0 ; // from 0 to 5
 
@@ -115,10 +117,21 @@ public class Player {
 		handler.getWorld().appleLocation[xCoord][yCoord]=false;
 		handler.getWorld().body.removeLast();	
 		}
-
-
 	}
-
+		//Making the counter
+		public void stepCounter() {
+			
+			
+			if(step>100) { // it will do 100 step, then it will change to rotten
+			Apple.setGood(false);	
+			
+				
+			}
+			else {
+				Apple.setGood(true); //Good Apple
+				
+			}
+		}
 	//Going through walls implemantation
 	public void checkCollisionAndMove(){
 		handler.getWorld().playerLocation[xCoord][yCoord]=false;
@@ -159,18 +172,22 @@ public class Player {
 		}
 		//When the Snakes eats
 		handler.getWorld().playerLocation[xCoord][yCoord]=true;
-
 		Tail tail= null;
 		if(handler.getWorld().appleLocation[xCoord][yCoord]){
 			
-			if(Apple.isGood() == false){
+			if(!Apple.isGood() ){
 				shittyEat();
+				step = 0;
 				score -= Math.sqrt((2*score +1));
+				lenght--; ////
 				
 			}else
 				Eat();
+			step = 0;
 				score += Math.sqrt((2*score +1));
+				
 		}
+	
 		// si choco 
 
 		if(!handler.getWorld().body.isEmpty()) {
@@ -239,8 +256,12 @@ BufferedImage img;
 		g.drawString("Score: " + score, 5, 20 );
 		//lenght implementation
 		g.setColor(Color.white);
-		g.setFont(new Font(" Times new roman ", Font.PLAIN, 20 ));
-		g.drawString(" Lenght: " + lenght, 5, 40);
+		g.setFont(new Font(" Times new roman ", Font.ITALIC, 20 ));
+		g.drawString(" Lenght: " + lenght, 350, 20);
+		
+		g.setColor(Color.white);
+		g.setFont(new Font(" Times new roman ", Font.ITALIC, 20 ));
+		g.drawString(" Steps: " + step, 700, 20);
 
 	}
 
