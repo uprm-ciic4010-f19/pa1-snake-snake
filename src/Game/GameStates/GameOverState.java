@@ -6,7 +6,7 @@ import Main.Handler;
 import Resources.Images;
 import UI.UIImageButton;
 import UI.UIManager;
-
+//implementation of the screen "game Over"
 public class GameOverState extends State{
 
 	private int count = 0;
@@ -38,7 +38,7 @@ public class GameOverState extends State{
 
 	@Override
 	public void tick() {
-		// TODO Auto-generated method stub
+		
         handler.getMouseManager().setUimanager(uiManager);
         uiManager.tick();
         count++;
@@ -56,8 +56,8 @@ public class GameOverState extends State{
 
 	@Override
 	public void render(Graphics g) {
-		// TODO Auto-generated method stub
-		g.drawImage(Images.gameOver,0,0,800,800,null); // More for can fill the scren
+		
+		g.drawImage(Images.gameOver,0,0,800,800,null); // To fill the screen with the image
         uiManager.Render(g);
 	}
 

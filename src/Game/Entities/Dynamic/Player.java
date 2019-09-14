@@ -37,7 +37,7 @@ import java.util.Random;
  */
 public class Player {
 	private int score = 0 ; //score variable
-	public int lenght;
+	public int lenght;		//length variable
 	public boolean justAte;
 	private Handler handler;
 
@@ -63,17 +63,17 @@ public class Player {
 
 	public void tick(){   
 		moveCounter++;
-		stepCounter();
+		stepCounter(); //Making the step counter be a part of Tick, so it can count the steps of the snake
 		if(moveCounter>=speed) { //speed
 			step++;
 			checkCollisionAndMove();
 			moveCounter= 0 ; // from 0 to 5
 
-			//Unable backtracking
+			//Unable backtracking and changing the keys
 		}
-		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W ) ){
+		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W ) ){ 
 
-			if(direction !="Down" ) {
+			if(direction !="Down" ) { 
 				direction = "Up" ;
 			}
 		}if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_S)){
@@ -94,45 +94,45 @@ public class Player {
 				direction = "Right";
 			}
 		}if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)){
-
+			//setting the pause state
 			State.setState(handler.getGame().pauseState);
 
 
 		}
 
-		//implementacion de tecla N, para aumentar cola.
+		//Implementation of key - increasing the tail by one
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_N)) 
 			handler.getWorld().body.addFirst(new Tail(xCoord, yCoord,handler));
 
-		//implementacion de tecla + para aumentar velocidad
+		//Implementation of key - increasing the speed of the snake
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_EQUALS))
 			speed --;  
 
-		//implementacion de tecla - para reducir velocidad
+		//Implementation of key - reducing the speed of the snake
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_MINUS))	  
 			speed++;
-		
+		//Implementation of key - reducing tail
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_M)){
 			handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
-		handler.getWorld().appleLocation[xCoord][yCoord]=false;
-		handler.getWorld().body.removeLast();	
+			handler.getWorld().appleLocation[xCoord][yCoord]=false;
+			handler.getWorld().body.removeLast();	
 		}
 	}
-		//Making the counter
-		public void stepCounter() {
-			
-			
-			if(step>100) { // it will do 100 step, then it will change to rotten
+	//Making the counter
+	public void stepCounter() {
+
+
+		if(step>100) { // it will do 100 step, then it will change to rotten
 			Apple.setGood(false);	
-			
-				
-			}
-			else {
-				Apple.setGood(true); //Good Apple
-				
-			}
+
+
 		}
-	//Going through walls implemantation
+		else {
+			Apple.setGood(true); //Good Apple
+
+		}
+	}
+	//Going through walls implementation
 	public void checkCollisionAndMove(){
 		handler.getWorld().playerLocation[xCoord][yCoord]=false;
 		int x = xCoord;
@@ -140,31 +140,31 @@ public class Player {
 		switch (direction){
 		case "Left":
 			if(xCoord==0){
-				xCoord=handler.getWorld().GridWidthHeightPixelCount-1;
+				xCoord=handler.getWorld().GridWidthHeightPixelCount-1; //This is to make the snake appear in the opposite side "Right"
 			}else{
 				xCoord--;
 			}
 			break;
 		case "Right":
 			if(xCoord==handler.getWorld().GridWidthHeightPixelCount-1){
-				//  kill();
-				xCoord= 0;
+
+				xCoord= 0;       //This is to make the snake appear in the opposite side "left"
 			}else{
 				xCoord++;
 			}
 			break;
 		case "Up":
 			if(yCoord==0){
-				yCoord=handler.getWorld().GridWidthHeightPixelCount-1;
-				// kill();
+				yCoord=handler.getWorld().GridWidthHeightPixelCount-1; //This is to make the snake appear in the opposite side "down"
+
 			}else{
 				yCoord--;
 			}
 			break;
 		case "Down":
 			if(yCoord==handler.getWorld().GridWidthHeightPixelCount-1){
-				yCoord = 0;
-				// kill();
+				yCoord = 0;  //This is to make the snake appear in the opposite side "down"
+
 			}else{
 				yCoord++;
 			}
@@ -174,37 +174,35 @@ public class Player {
 		handler.getWorld().playerLocation[xCoord][yCoord]=true;
 		Tail tail= null;
 		if(handler.getWorld().appleLocation[xCoord][yCoord]){
-			
-			if(!Apple.isGood() ){
-				shittyEat();
-				step = 0;
-				score -= Math.sqrt((2*score +1));
-				lenght--; ////
-				
+			// This tells you that if the apple is false, it will get to another color
+			if(Apple.isGood() == false ){ 
+				shittyEat(); //This method allows to remove the tail
+				step = 0;  //Resetting the counter
+				score -= Math.sqrt((2*score +1)); // subtracting when a rotten apple gets eating
+				lenght--; //Decrease the length whenever it eats a rotten apple
+
 			}else
-				Eat();
-			step = 0;
-				score += Math.sqrt((2*score +1));
-				
+				Eat(); // Whenever the snake eat a good apple gain a tail
+			step = 0; //Reset
+			score += Math.sqrt((2*score +1)); //Summation whenever the snake eats a good apple
+
 		}
-	
-		// si choco 
+
+
 
 		if(!handler.getWorld().body.isEmpty()) {
 			handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
 			handler.getWorld().body.removeLast();
 			handler.getWorld().body.addFirst(new Tail(x, y,handler));
-			
-BufferedImage img;
-			//collition with itself
+
+			BufferedImage img;
+			//Collision with itself
 			for(int i =0;i< handler.getWorld().body.size();i++) {
 				if(xCoord == handler.getWorld().body.get(i).x && yCoord == handler.getWorld().body.get(i).y) {
 
-					State.setState(handler.getGame().gameOverState);
-					
-					
-//					JOptionPane.showMessageDialog(null, "Game Over");
-//					System.exit(0);
+					State.setState(handler.getGame().gameOverState); //Calling the class to get the image
+
+
 
 				}
 
@@ -217,20 +215,22 @@ BufferedImage img;
 
 	}
 
+	// Render allows to display an object on the screeen
 	public void render(Graphics g,Boolean[][] playeLocation){
 		Random r = new Random();
 		for (int i = 0; i < handler.getWorld().GridWidthHeightPixelCount ; i++) {
 			for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
-				if(playeLocation[i][j]){
+				//Implemented to change the color of the snake different from the apple
+				if(playeLocation[i][j]){ // Playerlocation = "the snake"
 					g.setColor(Color.green);
 					g.fillRect((i*handler.getWorld().GridPixelsize),
 							(j*handler.getWorld().GridPixelsize),
 							handler.getWorld().GridPixelsize,
 							handler.getWorld().GridPixelsize);
 				}
-				//Para poder cambiar la manzana mala a otro color
+				//Making the color to yellow hen apple is bad
 				else if(Apple.isGood() == false){
-					if(handler.getWorld().appleLocation[i][j]){
+					if(handler.getWorld().appleLocation[i][j]){ //Apple
 						g.setColor(Color.YELLOW);
 						g.fillRect((i*handler.getWorld().GridPixelsize),
 								(j*handler.getWorld().GridPixelsize),
@@ -238,7 +238,8 @@ BufferedImage img;
 								handler.getWorld().GridPixelsize);
 					}
 				}
-				else if(handler.getWorld().appleLocation[i][j]){
+				//The color for the good apple
+				else if(handler.getWorld().appleLocation[i][j]){ //Apple
 					g.setColor(Color.red);
 					g.fillRect((i*handler.getWorld().GridPixelsize),
 							(j*handler.getWorld().GridPixelsize),
@@ -252,23 +253,23 @@ BufferedImage img;
 
 		//Score implementation
 		g.setColor(Color.white);
-		g.setFont(new Font("Times new roman", Font.PLAIN, 20 ));
+		g.setFont(new Font("Times new roman", Font.ITALIC, 20 ));
 		g.drawString("Score: " + score, 5, 20 );
-		//lenght implementation
+		//Length on the screen implementation
 		g.setColor(Color.white);
 		g.setFont(new Font(" Times new roman ", Font.ITALIC, 20 ));
-		g.drawString(" Lenght: " + lenght, 350, 20);
-		
+		g.drawString(" Length: " + lenght, 320, 20);
+		//steps on the screen implementation
 		g.setColor(Color.white);
 		g.setFont(new Font(" Times new roman ", Font.ITALIC, 20 ));
-		g.drawString(" Steps: " + step, 700, 20);
+		g.drawString(" Steps: " + step, 680, 20);
 
 	}
 
 	public void Eat(){
-		//For Lenght implemantation
+		//For Length implemantation
 		lenght++;
-		//Can delete the speed does not affect anything
+		//After the snake eats, "speed--" will make the snake go faster
 		speed--;
 
 		Tail tail= null;
@@ -376,9 +377,9 @@ BufferedImage img;
 		handler.getWorld().body.addLast(tail);
 		handler.getWorld().playerLocation[tail.x][tail.y] = true;		
 	}
-	
+	//Method to remove the tail after the snake has eaten a bad apple
 	public void shittyEat(){
-		
+
 		handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
 		handler.getWorld().appleLocation[xCoord][yCoord]=false;
 		handler.getWorld().body.removeLast();

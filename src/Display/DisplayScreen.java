@@ -16,7 +16,7 @@ public class DisplayScreen {
     private Canvas canvas;
     private String title;
     private int width, height;
-    Color purple = new Color (0,255,0);//for purple
+  
 
     public DisplayScreen(String title, int width, int height){
         this.title = title;
@@ -48,7 +48,7 @@ public class DisplayScreen {
         canvas.setMaximumSize(new Dimension(width, height));
         canvas.setMinimumSize(new Dimension(width, height));
         canvas.setFocusable(false);
-        canvas.setBackground(new Color(126,0,126)); //RGB
+        canvas.setBackground(new Color(126,0,126)); //RGB for purples
 
         frame.add(canvas);
         frame.pack();
